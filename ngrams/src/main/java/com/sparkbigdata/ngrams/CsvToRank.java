@@ -17,15 +17,15 @@ public class CsvToRank {
                 .option("delimiter",",")
                 .option("header",true)
                 .csv(path);
-        csv.createTempView("SOURCE");
-        Dataset<Row> counters = csv.sqlContext().sql("select COL1, COL2, count(*) as counter from SOURCE group by COL1, COL2 order by COL1,COL2, COUNT(*) DESC");
+        csv.createTempView("RESTAURANT");
+        Dataset<Row> counters = csv.sqlContext().sql("select NAME, count(*) as counter from RESTAURANT group by NAME order by NAME, COUNT(*) DESC");
         counters.createTempView("COUNTERS");
         Dataset<Row> orderedCouples = session
-                .sql("select col1 , col2,  counter , "
-                        + " dense_rank() over (partition by COL1 order by COUNTER desc ) as rank , "
-                        + " row_number() over (partition by COL1  order by COL1, COUNTER desc, COL2 ) as localid "
+                .sql("select NAME,  counter , "
+                        + " dense_rank() over (partition by NAME order by COUNTER desc ) as rank , "
+                        + " row_number() over (partition by NAME  order by NAME, COUNTER desc, NAME ) as localid "
                         + " from COUNTERS "
-                        + " order by COL1 , rank asc , localid asc");
+                        + " order by NAME , rank asc , localid asc");
         return orderedCouples ;
     }
 }

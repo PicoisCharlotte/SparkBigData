@@ -10,7 +10,7 @@ import com.sparkbigdata.tools.SparkSessionFactory;
 
 public class TestCsvToRank {
 
-    private final static String path = TestCsvToRank.class.getClassLoader().getResource("test.csv").getFile();
+    private final static String path = TestCsvToRank.class.getClassLoader().getResource("food.csv").getFile();
 
     @Test
     public void test2() throws Exception {
@@ -19,7 +19,7 @@ public class TestCsvToRank {
         SparkSession testSession = SparkSessionFactory.getSession();
         Dataset<Row> rank = CsvToRank.rank2(testSession,path);
         for(Row row : rank.collectAsList()) {
-            Assert.assertEquals(5,row.size());
+            Assert.assertEquals(4,row.size());
         }
         rank.show();
     }
