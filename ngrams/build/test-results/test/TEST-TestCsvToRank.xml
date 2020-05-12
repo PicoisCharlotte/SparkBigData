@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="TestCsvToRank" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-05-12T13:22:53" hostname="PC_Materiel_net" time="9.461">
+  <properties/>
+  <testcase name="test2" classname="TestCsvToRank" time="9.461"/>
+  <system-out><![CDATA[+---------+---------+-------+----+-------+
+|     col1|     col2|counter|rank|localid|
++---------+---------+-------+----+-------+
+|       en|   retard|      1|   1|      1|
+|       en|    route|      1|   1|      2|
+|       je|     suis|      3|   1|      1|
+|       je|   marche|      1|   2|      2|
+|     lent|       je|      1|   1|      1|
+|lentement|     null|      1|   1|      1|
+|     mais|       je|      1|   1|      1|
+|   marche|lentement|      1|   1|      1|
+|   retard|     mais|      1|   1|      1|
+|    route|       je|      1|   1|      1|
+|     suis|       en|      2|   1|      1|
+|     suis|     lent|      1|   2|      2|
++---------+---------+-------+----+-------+
+
+]]></system-out>
+  <system-err><![CDATA[Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+]]></system-err>
+</testsuite>
