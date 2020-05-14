@@ -1,6 +1,8 @@
 package com.sparkbigdata.tools;
 
 import javax.xml.transform.Result;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
@@ -8,7 +10,7 @@ import java.util.List;
 import com.sparkbigdata.*;
 
 public class Query {
-    private final static String PATH = Query.class.getClassLoader().getResource("test.txt").getFile();
+    private final static String PATH = Query.class.getClassLoader().getResource("corpus.txt").getFile();
 
     public static void main(String[] args) {
         Connexion connexion = new Connexion("tools/src/asset/db/Database.db");
@@ -17,7 +19,7 @@ public class Query {
 
 //        ResultSet resultSet = connexion.query("SELECT * FROM 2GRAMS");
 
-        //cleanTable(connexion);
+        cleanTable(connexion);
 
         try {
             insert3grams(connexion);
@@ -53,16 +55,16 @@ public class Query {
                 currentWord = line.split(",")[2];
             }
 
-            connexion.query("INSERT INTO '3GRAMS' (PREVIOUS1,PREVIOUS2,CURRENT) VALUES ('"
-                    + previousWord1 + "','"
-                    + previousWord2 + "','"
-                    + currentWord + "')");
+            connexion.execQuery("INSERT INTO '3GRAMS' (PREVIOUS1,PREVIOUS2,CURRENT) VALUES ('"
+                    + new String(previousWord1.getBytes(), Charset.defaultCharset()) + "','"
+                    +  new String(previousWord2.getBytes(), Charset.defaultCharset()) + "','"
+                    +  new String(currentWord.getBytes(), Charset.defaultCharset()) + "')");
         }
 
 
     }
 
     public static void cleanTable(Connexion connexion) {
-        connexion.query("DELETE FROM '3GRAMS'");
+        connexion.execQuery("DELETE FROM '3GRAMS'");
     }
 }

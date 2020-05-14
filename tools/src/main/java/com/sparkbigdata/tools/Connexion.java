@@ -40,6 +40,17 @@ public class Connexion {
             System.out.println("Erreur dans la request : " + request);
         }
         return resultat;
+    }
+
+    public void execQuery(String request) {
+        try {
+             statement.executeUpdate(request);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Erreur dans la request : " + request);
+        }
 
     }
+
+
 }
