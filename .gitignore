@@ -6,3 +6,11 @@ gradlew.bat
 reader/build/
 ngrams/build/
 tools/build/
+*.html
+*.class
+*.xml
+*.css
+*.bin
+*.idx
+*.jar
+*.MF

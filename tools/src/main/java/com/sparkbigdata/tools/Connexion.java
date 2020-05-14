@@ -3,7 +3,7 @@ package com.sparkbigdata.tools;
 import java.sql.*;
 
 public class Connexion {
-    private String DBPath = "C:\\Users\\lucil\\OneDrive\\Documents\\cours\\BigData\\SparkBigData\\tools\\src\\asset\\db";
+    private String DBPath = "tools/src/asset/db";
     private Connection connection = null;
     private Statement statement = null;
 
@@ -37,7 +37,7 @@ public class Connexion {
             resultat = statement.executeQuery(request);
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Erreur dans la requet : " + request);
+            System.out.println("Erreur dans la request : " + request);
         }
         return resultat;
 
