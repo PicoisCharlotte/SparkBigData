@@ -1,13 +1,8 @@
 package com.sparkbigdata.tools;
 
-import javax.xml.transform.Result;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.List;
-import com.sparkbigdata.*;
 
 public class Query {
     private final static String PATH = Query.class.getClassLoader().getResource("corpus.txt").getFile();
@@ -17,24 +12,20 @@ public class Query {
         connexion.connect();
 
 
-//        ResultSet resultSet = connexion.query("SELECT * FROM 2GRAMS");
+        clean2GramsTable(connexion);
+        clean3GramsTable(connexion);
 
-        cleanTable(connexion);
+        try {
+            insert2grams(connexion);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         try {
             insert3grams(connexion);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-//        try {
-//            while (resultSet.next()) {
-//                System.out.println("Titre : "+resultSet.getString("PREVIOUS"));
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-
         connexion.close();
     }
 
@@ -56,15 +47,36 @@ public class Query {
             }
 
             connexion.execQuery("INSERT INTO '3GRAMS' (PREVIOUS1,PREVIOUS2,CURRENT) VALUES ('"
-                    + new String(previousWord1.getBytes(), Charset.defaultCharset()) + "','"
-                    +  new String(previousWord2.getBytes(), Charset.defaultCharset()) + "','"
-                    +  new String(currentWord.getBytes(), Charset.defaultCharset()) + "')");
+                    + new String(previousWord1.getBytes(), StandardCharsets.UTF_8) + "','"
+                    +  new String(previousWord2.getBytes(), StandardCharsets.UTF_8) + "','"
+                    +  new String(currentWord.getBytes(), StandardCharsets.UTF_8) + "')");
         }
-
-
     }
 
-    public static void cleanTable(Connexion connexion) {
+    public static void insert2grams(Connexion connexion) throws Exception {
+        String previousWord = "";
+        String currentWord = "";
+
+        NGramsCsvExporter exporter = new NGramsCsvExporter();
+        List<String> lines = exporter.exportToLines(PATH,2);
+
+        for(String line: lines) {
+
+            if(line.split(",").length > 1 ) {
+                previousWord = line.split(",")[0];
+                currentWord = line.split(",")[1];
+            }
+
+            connexion.execQuery("INSERT INTO '2GRAMS' (PREVIOUS,CURRENT) VALUES ('"
+                    + new String(previousWord.getBytes(), StandardCharsets.UTF_8) + "','"
+                    + new String(currentWord.getBytes(), StandardCharsets.UTF_8) + "')");
+        }
+    }
+
+    public static void clean3GramsTable(Connexion connexion) {
         connexion.execQuery("DELETE FROM '3GRAMS'");
+    }
+    public static void clean2GramsTable(Connexion connexion) {
+        connexion.execQuery("DELETE FROM '2GRAMS'");
     }
 }

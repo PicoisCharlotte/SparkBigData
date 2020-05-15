@@ -36,11 +36,6 @@ public class TestNGramsCsvExporter {
                 Assert.assertEquals(previousLine.split(",")[1],words[0]);
             }
 
-//            for (int i = 0; i < words.length; i++) {
-//                System.out.println(words[i]);
-//            }
-//            System.out.println();
-
             testLines(line);
 
             previousLine = line ;
