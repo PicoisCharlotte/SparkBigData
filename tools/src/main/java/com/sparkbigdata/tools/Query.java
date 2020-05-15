@@ -6,23 +6,26 @@ import java.util.List;
 
 public class Query {
     private final static String PATH = Query.class.getClassLoader().getResource("corpus.txt").getFile();
+    private final static String PATH2 = Query.class.getClassLoader().getResource("corpus2.txt").getFile();
 
     public static void main(String[] args) {
         Connexion connexion = new Connexion("tools/src/asset/db/Database.db");
         connexion.connect();
 
 
-        clean2GramsTable(connexion);
-        clean3GramsTable(connexion);
+        //clean2GramsTable(connexion);
+        //clean3GramsTable(connexion);
 
         try {
-            insert2grams(connexion);
+            insert2grams(connexion, PATH);
+            insert2grams(connexion, PATH2);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         try {
-            insert3grams(connexion);
+            insert3grams(connexion, PATH);
+            insert3grams(connexion, PATH2);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -30,13 +33,13 @@ public class Query {
     }
 
 
-    public static void insert3grams(Connexion connexion) throws Exception {
+    public static void insert3grams(Connexion connexion, String path) throws Exception {
         String previousWord1 = "";
         String previousWord2 = "";
         String currentWord = "";
 
         NGramsCsvExporter exporter = new NGramsCsvExporter();
-        List<String> lines = exporter.exportToLines(PATH,3);
+        List<String> lines = exporter.exportToLines(path,3);
 
         for(String line: lines) {
 
@@ -53,12 +56,12 @@ public class Query {
         }
     }
 
-    public static void insert2grams(Connexion connexion) throws Exception {
+    public static void insert2grams(Connexion connexion, String path) throws Exception {
         String previousWord = "";
         String currentWord = "";
 
         NGramsCsvExporter exporter = new NGramsCsvExporter();
-        List<String> lines = exporter.exportToLines(PATH,2);
+        List<String> lines = exporter.exportToLines(path,2);
 
         for(String line: lines) {
 
